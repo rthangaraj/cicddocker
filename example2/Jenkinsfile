@@ -18,7 +18,7 @@ pipeline {
       steps {
 	  script{
         docker.withRegistry('https://index.docker.io/rameshthangaraj', 'dockerhubcred') {
-          def app = docker.build("pytest-image:${env.BUILD_ID}", "./example2/Dockerfile")
+          def app = docker.build("pytest-image:${env.BUILD_ID}", "./example2/")
           app.push()
 
         }
