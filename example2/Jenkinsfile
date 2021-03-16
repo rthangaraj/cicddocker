@@ -16,12 +16,13 @@ pipeline {
 	  
 	  stage ("Pushing the docker Image") {
       steps {
+	  script{
         docker.withRegistry('https://dockerhub.io/rameshthangaraj', 'dockerhubcreds') {
           def app = docker.build("pytest-image:${env.BUILD_ID}", "./example2/Dockerfile")
           app.push()
 
         }
-        
+        }
       }
     }
 
