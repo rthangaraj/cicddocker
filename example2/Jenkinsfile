@@ -1,34 +1,30 @@
-node {
-  def app
-  step('Clone repo') {
-    checkout scm
-  }
-  step('Build Image') {
-    app = docker.build("rameshthangaraj/hello")
+pipeline {
+  agent (any) 
+  environment {
+    name = abc
+    loc = dba
 
   }
-  step('Test') {
-    app.inside {
-      sh 'echo "Test passed"'
 
+  stages {
+    stage ("Checkout") {
+      steps {
+        checkout scm 
 
+      }
+	  }
+	  
+	  stage ("Pushing the docker Image") {
+      steps {
+        docker.withRegistry('https://dockerhub.io/rameshthangaraj', 'dockerhubcreds') {
+          def app = docker.build("pytest-image:${env.BUILD_ID}", "./example2/Dockerfile")
+          app.push()
+
+        }
+        
+      }
     }
 
-  }
-  step('Push Image') {
-    docker.withRegistry('https://registry.hub.docker.com', 'git') {
-       app.push("${env.BUILD_NUMBER}")
-       app.push("latest")
-    }
-  }
-  stage('Delpoying the App on Azure Kubernetes Service') {
-    app = docker.image('testacr.azurecr.io/demo:latest')
-    withDockerRegistry([credentialsId: 'acr_credentials', url: 'https://testacr.azurecr.io']) {
-    app.pull()
-    sh "kubectl create -f ."
-    }
-   }
 }
 
-
-
+}
