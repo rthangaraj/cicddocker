@@ -1,8 +1,8 @@
 pipeline {
   agent (any) 
   environment {
-    name = abc
-    loc = dba
+    name = "abc"
+    loc = "dba"
 
   }
 
