@@ -33,7 +33,7 @@ pipeline {
       steps {
         script {
           env.PIPELINE_NAMESPACE = "kube-system"
-          kubernetesDeploy kubeconfigId: 'sandboxcluster', configs: 'example2/deployment.yaml'
+          kubernetesDeploy kubeconfigId: 'sandboxtestcluster', configs: 'example2/deployment.yaml'
         }
       }
     }
