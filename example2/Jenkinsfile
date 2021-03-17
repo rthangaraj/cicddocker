@@ -1,5 +1,5 @@
 pipeline {
-  agent (any) 
+  agent (any)
   environment {
     name = "abc"
     loc = "dba"
@@ -9,23 +9,35 @@ pipeline {
   stages {
     stage ("Checkout") {
       steps {
-        checkout scm 
+        checkout scm
 
       }
 	  }
-	  
+
 	  stage ("Pushing the docker Image") {
       steps {
-	  script{
-        docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
-          def app = docker.build("rameshthangaraj/pytest-image", "./example2/")
-          app.push()
+
+	      script{
+
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
+
+            def app = docker.build("rameshthangaraj/pytest-image", "./example2/")
+            app.push()
 
         }
         }
       }
     }
 
-}
+    stage ("Deploy in AKS cluster") {
+      steps {
+        script {
+          env.PIPELINE_NAMESPACE = "kube-system"
+          kubernetesDeploy kubeconfigId: 'sandboxcluster', configs: 'example2/deployment.yaml'
+        }
+      }
+    }
 
 }
+}
+
