@@ -17,7 +17,7 @@ pipeline {
 	  stage ("Pushing the docker Image") {
       steps {
 	  script{
-        docker.withRegistry('https://docker.io', 'dockerhubcred') {
+        docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
           def app = docker.build("rameshthangaraj/pytest-image", "./example2/")
           app.push()
 
