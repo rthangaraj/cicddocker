@@ -2,6 +2,7 @@
  kind: Deployment
  metadata:
    name: flask-app-deployment
+   namespace: kube-system
  spec:
    replicas: 1
    selector:
