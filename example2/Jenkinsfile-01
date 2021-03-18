@@ -16,7 +16,7 @@ pipeline {
     }
     stage ("Building Docker Image") {
       steps {
-        sh 'docker build -f example2/Dockerfile -t rameshthangaraj/pytest01:latest .'
+        sh 'docker build -f example2/Dockerfile -t rameshthangaraj/pytest01:latest'
 
       }
     }
@@ -47,6 +47,18 @@ pipeline {
               """
             }
           }
+        }
+      }
+    }
+
+    stage ("Get kubernetes cluster Nodes and namespaces") {
+      steps {
+        script {
+          sh """
+          kubectl get ns 
+          kubectl get nodes
+          kubectl get po -n kube-system 
+          """
         }
       }
     }
