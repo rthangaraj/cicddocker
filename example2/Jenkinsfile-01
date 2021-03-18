@@ -1,8 +1,8 @@
 pipeline {
   agent (any)
   environment {
-    dockerregname = ""
-    dockerhubcred = ""
+    aksrg = "test-rt-rg"
+    aksname = "testcluster01"
 
   }
 
@@ -16,17 +16,33 @@ pipeline {
     }
     stage ("Building Docker Image") {
       steps {
-        sh 'docker build -f example2/Dockerfile  -t rameshthangaraj/pytest01:latest .'
+        sh 'docker build -f example2/Dockerfile -t rameshthangaraj/pytest01:latest'
 
       }
     }
 
     stage ("Push Images to Docker registry") {
-    
+      when {
+        branch 'main'
+      }
       steps {
-        withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'dockerhubcred') {
+        withDockerRegistry (url: "https://index.docker.io/v1/" , credntialsId: "dockerhubcred") {
           sh 'docker push rameshthangaraj/pytest01:latest'
 
+        }
+      }
+
+
+    }
+
+    stage ("Downloading aks creds") {
+      steps {
+        withCredentials([azureServicePrincipal('f42de3a2-002a-411c-8706-2294560edae3')]) {
+          docker.image("microsoft/azure-cli:latest").inside('-u root') {
+            sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+            rm -f $WORKSPACE/kube_config.config
+            az aks get-credentials -g $aksrg -n $aksname --admin --file sandboxtestclusterkubeconfig
+          }
         }
       }
     }
