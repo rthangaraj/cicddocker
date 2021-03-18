@@ -41,7 +41,7 @@ pipeline {
           docker.image("microsoft/azure-cli:latest").inside('-u root') {
             sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
             rm -f $WORKSPACE/kube_config.config
-            az aks get-credentials -g $aksrg -n $aksname --admin --file sandboxtestclusterkubeconfig
+            az aks get-credentials -g $aksrg -n $aksname --admin --file sandboxtestclusterkubeconfig'
           }
         }
       }
