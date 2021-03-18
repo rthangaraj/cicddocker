@@ -55,6 +55,7 @@ pipeline {
       steps {
         script {
           sh """
+          sudo setfacl -Rm u:jenkinsadmin:rw /home/jenkinsadmin/workspace
           export KUBECONFIG=$WORKSPACE/sandboxtestclusterkubeconfig
           kubectl get ns 
           kubectl get nodes
