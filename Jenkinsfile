@@ -26,7 +26,7 @@ pipeline {
         branch 'main'
       }
       steps {
-        withDockerRegistry (url: "https://index.docker.io/v1/" , credentialsId: "dockerhubcred") {
+        withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'dockerhubcred') {
           sh 'docker push rameshthangaraj/pytest01:latest'
 
         }
