@@ -8,7 +8,11 @@ pipeline {
 
   stages {
     stage ("Git Checkout") {
-      checkout scm
+      steps {
+        checkout scm
+
+      }
+      
     }
     stage ("Building Docker Image") {
       steps {
@@ -24,7 +28,7 @@ pipeline {
       steps {
         withDockerRegistry (url: "https://index.docker.io/v1/" , credntialsId: "dockerhubcred") {
           sh 'docker push rameshthangaraj/pytest01:latest'
-          
+
         }
       }
     }
