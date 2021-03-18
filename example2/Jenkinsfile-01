@@ -16,7 +16,7 @@ pipeline {
     }
     stage ("Building Docker Image") {
       steps {
-        sh 'docker build  -t rameshthangaraj/pytest01:latest'
+        sh 'docker build  -t rameshthangaraj/pytest01:latest .'
 
       }
     }
