@@ -55,6 +55,7 @@ pipeline {
       steps {
         script {
           sh """
+          export KUBECONFIG=$WORKSPACE/sandboxtestclusterkubeconfig
           kubectl get ns 
           kubectl get nodes
           kubectl get po -n kube-system 
