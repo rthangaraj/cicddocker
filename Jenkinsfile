@@ -16,7 +16,7 @@ pipeline {
     }
     stage ("Building Docker Image") {
       steps {
-        sh 'docker build -f example2/Dockerfile -t rameshthangaraj/pytest01:latest'
+        sh 'docker build -f example2 -t rameshthangaraj/pytest01:latest'
 
       }
     }
