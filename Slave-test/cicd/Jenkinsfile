@@ -20,7 +20,7 @@ pipeline {
 
 		stage('Maven-build'){
 		    steps {
-            sh " ls -lrt /var/lib/jenkins/workspace/mavendocker;ls -lrt /var/lib/jenkins/workspace/mavendocker@tmp;mvn -Dmaven.test.failure.ignore=true clean package"
+            sh " cd /var/lib/jenkins/workspace/mavendocker/Slave-test;mvn -Dmaven.test.failure.ignore=true clean package"
             }		 
 		
 		}
