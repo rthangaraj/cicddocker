@@ -12,11 +12,6 @@ pipeline {
     }
 	 stages {
 	 
-	    stage('Clean WS') {
-            steps {
-              cleanWs()
-            }
-        }
         stage('checkout-repo') {
             steps {
               checkout scm
