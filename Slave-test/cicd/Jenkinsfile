@@ -1,0 +1,41 @@
+pipeline {
+    agent {
+    docker {
+        image 'maven:3-alpine'
+        label 'my-slave'
+        args  '-v /tmp:/tmp'
+      }
+   }
+    options {
+        skipDefaultCheckout true
+        buildDiscarder(logRotator(numToKeepStr:'10'))
+    }
+	 stages {
+	 
+	    stage('Clean WS') {
+            steps {
+              cleanWs()
+            }
+        }
+        stage('checkout-repo') {
+            steps {
+              checkout scm
+            }
+        }
+
+		stage('Maven-build'){
+		    steps {
+            sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            }		 
+		
+		}
+		
+
+	}
+  post {
+            always {
+                echo "Post deployment completed"
+				//cleanWs()
+            }
+    }
+}
