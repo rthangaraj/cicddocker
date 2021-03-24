@@ -2,8 +2,7 @@ pipeline {
     agent {
     docker {
         image 'maven:3-alpine'
-        label 'my-slave'
-        args  '-v /tmp:/tmp'
+
       }
    }
     options {
