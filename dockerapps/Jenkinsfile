@@ -29,10 +29,12 @@ pipeline {
       }
     }
   }
+  post {
   success {
   print 'Job completed successfully.'
   sh "docker rmi -f ${image.id}"
 }
+  }
 
 
 }
