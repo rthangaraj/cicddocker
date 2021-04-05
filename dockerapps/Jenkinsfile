@@ -33,10 +33,6 @@ pipeline {
   print 'Job completed successfully.'
   sh "docker rmi -f ${image.id}"
 }
-always {
-  // remove built docker image and prune system
-  print 'Cleaning up the Docker system.'
- 
-}
+
 
 }
