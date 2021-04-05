@@ -1,0 +1,21 @@
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: flask-app-deployment
+   namespace: kube-system
+ spec:
+   replicas: 1
+   selector:
+     matchLabels:
+       app: flasknode
+   template:
+     metadata:
+       labels:
+         app: flasknode
+     spec:
+       containers:
+       - name: flaskapp
+         image: rameshthangaraj/mypythonimage:1.0
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 5000

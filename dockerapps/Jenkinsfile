@@ -1,0 +1,33 @@
+pipeline {
+  agent (any)
+
+  stages {
+    stage ("Checkout") {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage ("Pushing Docker Image") {
+      steps {
+        script {
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
+            def app = docker.build("rameshthangaraj/mypythonimage", "./dockerapps")
+            app.push()
+          }
+        }
+      }
+    }
+
+    stage ("Deploy in AKS cluster") {
+      steps {
+        script {
+          env.PIPELINE_NAMESPACE = "kube-system"
+          kubernetesDeploy kubeconfigId: 'sandboxcluster', configs: 'dockerapps/deployment.yaml'
+          kubernetesDeploy kubeconfigId: 'sandboxcluster', configs: 'dockerapps/service.yaml'
+        }
+      }
+    }
+  }
+
+}
