@@ -18,6 +18,20 @@ pipeline {
         }
       }
     }
+    
+       stage ("Pulling Docker Image and testing inside it") {
+      steps {
+        script {
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
+            def app = docker.build("rameshthangaraj/mypythonimage", "./dockerapps")
+            app.pull()
+            app.inside() {
+              sh 'ls'
+}
+          }
+        }
+      }
+    }
 
     stage ("Deploy in AKS cluster") {
       steps {
