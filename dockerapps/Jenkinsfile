@@ -1,5 +1,7 @@
 pipeline {
-  agent (any)
+  agent {
+    docker "arhatdev/python3.8"
+  }
 
   stages {
     stage ("Checkout") {
