@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    docker "arhatdev/python3.8"
+    docker "faucet/python3"
   }
 
   stages {
