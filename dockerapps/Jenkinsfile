@@ -1,6 +1,9 @@
 pipeline {
   agent {
-    docker { image "python:3.8" }
+    docker {
+      image 'node:12'
+      args '-p 3000:3000' 
+    }
   }
 
   stages {
