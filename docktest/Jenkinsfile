@@ -33,11 +33,11 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
-            def app = docker.build("rameshthangaraj/mypyimage01", "./docktest")
-            app.pull()
-            app.inside() {
+            docker.image('mypyimage01').inside {
               sh 'ls'
-}
+              sh 'Testing completed inside the container'
+            }
+
           }
         }
       }
