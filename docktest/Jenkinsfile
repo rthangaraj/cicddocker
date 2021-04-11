@@ -33,7 +33,7 @@ pipeline {
           docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
             docker.image('rameshthangaraj/mypyimage01').inside {
               sh 'ls'
-              sh 'Testing completed inside the container'
+              sh 'echo "Testing completed inside the container"'
             }
 
           }
