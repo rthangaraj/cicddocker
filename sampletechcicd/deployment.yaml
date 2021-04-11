@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: appjs-dep
+   namespace: kube-system
+ spec:
+   replicas: 1
+   selector:
+     matchLabels:
+       app: appjs
+   template:
+     metadata:
+       labels:
+         app: appjs
+     spec:
+       containers:
+       - name: appjs
+         image: rameshthangaraj/mynodejsimage
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8080
