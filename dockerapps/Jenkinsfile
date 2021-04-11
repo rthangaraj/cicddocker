@@ -46,6 +46,7 @@ pipeline {
   }
   post {
   success {
+  echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
   print 'Job completed successfully.'
 
 }
