@@ -1,0 +1,68 @@
+pipeline {
+  agent {
+   kubernetes {
+            label 'promo-app'
+            idleMinutes 5 
+            yamlFile 'build-pod.yaml'
+            defaultContainer 'docker' 
+        } 
+    
+  }
+  
+
+  stages {
+    stage ("Checkout") {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage ("Pushing Docker Image") {
+      steps {
+        script {
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
+            def app = docker.build("rameshthangaraj/mynodejsimage", "./sampletechcicd")
+            app.push()
+          }
+        }
+      }
+    }
+    
+       stage ("Pulling Docker Image and testing inside it") {
+         when {
+                branch 'main'
+            }
+      steps {
+        script {
+          docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
+            def app = docker.build("rameshthangaraj/mynodejsimage", "./sampletechcicd")
+            app.pull()
+            app.inside() {
+              sh 'ls'
+}
+          }
+        }
+      }
+    }
+
+    stage ("Deploy in AKS cluster") {
+      steps {
+        script {
+          env.PIPELINE_NAMESPACE = "kube-system"
+          kubernetesDeploy kubeconfigId: 'sandboxtestcluster', configs: 'sampletechcicd/*.yaml'
+          
+          
+        }
+      }
+    }
+  }
+  post {
+  success {
+    echo "Running ${env.JOB_NAME} ${env.BUILD_ID} on ${env.JENKINS_URL} ${env.NODE_NAME}"
+  print 'Job completed successfully.'
+
+}
+  }
+
+
+}
