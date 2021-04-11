@@ -21,6 +21,9 @@ pipeline {
     }
     
        stage ("Pulling Docker Image and testing inside it") {
+         when {
+                branch 'main'
+            }
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcred') {
