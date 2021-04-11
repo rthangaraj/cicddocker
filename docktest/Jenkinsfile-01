@@ -3,7 +3,7 @@ pipeline {
    kubernetes {
             label 'promo-app'
             idleMinutes 5 
-            yamlFile 'build-pod.yaml'
+            yamlFile 'docktest/build-pod.yaml'
             defaultContainer 'docker' 
         } 
     
